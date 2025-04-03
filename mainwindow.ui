@@ -216,7 +216,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>180</y>
+      <y>140</y>
       <width>350</width>
       <height>200</height>
      </rect>
@@ -1161,8 +1161,8 @@
    <widget class="QPushButton" name="ChairUpward_PB">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>200</y>
+      <x>180</x>
+      <y>190</y>
       <width>101</width>
       <height>81</height>
      </rect>
@@ -1179,7 +1179,7 @@
    <widget class="QPushButton" name="ChairDownward_PB">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>180</x>
       <y>310</y>
       <width>101</width>
       <height>81</height>
@@ -1197,8 +1197,8 @@
    <widget class="QPushButton" name="BackrestForward_PB">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>160</y>
+      <x>70</x>
+      <y>130</y>
       <width>101</width>
       <height>81</height>
      </rect>
@@ -1216,7 +1216,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>280</y>
+      <y>240</y>
       <width>101</width>
       <height>81</height>
      </rect>
@@ -1243,6 +1243,40 @@
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="FilmViewer_PB">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>370</y>
+      <width>101</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <zorder>Unit_Label</zorder>
+   <zorder>PresetPositionGroupA_PB</zorder>
+   <zorder>PresetPositionGroupB_PB</zorder>
+   <zorder>PresetPositionGroupD_PB</zorder>
+   <zorder>PresetPositionGroupC_PB</zorder>
+   <zorder>PresetPosition2_PB</zorder>
+   <zorder>PresetPosition1_PB</zorder>
+   <zorder>RinsingPosition_PB</zorder>
+   <zorder>PresetPosition3_PB</zorder>
+   <zorder>BowlRinsing_PB</zorder>
+   <zorder>CupFiller_PB</zorder>
+   <zorder>OperatingLight_PB</zorder>
+   <zorder>WaterHeater_PB</zorder>
+   <zorder>Reset_PB</zorder>
+   <zorder>Setting_PB</zorder>
+   <zorder>ChairUpward_PB</zorder>
+   <zorder>ChairDownward_PB</zorder>
+   <zorder>BackrestForward_PB</zorder>
+   <zorder>BackrestBackward_PB</zorder>
+   <zorder>CallAssist_PB</zorder>
+   <zorder>FilmViewer_PB</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
