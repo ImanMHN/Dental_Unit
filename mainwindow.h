@@ -8,6 +8,10 @@
 #include <QByteArray>
 #include <QIcon>
 #include <QPixmap>
+#include <QString>
+#include <cstring>
+#include <algorithm>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -44,7 +48,43 @@ typedef enum
     ERROR               = 0x1A,
     FILMVIEW            = 0x1B,
     RINSING_POSITION    = 0x1C
+
 } SerialCommands;
+
+typedef enum {
+    POSITION_GROUP_A,
+    POSITION_GROUP_B,
+    POSITION_GROUP_C,
+    POSITION_GROUP_D
+
+} PresetPositionGroup;
+
+typedef enum {
+    WAITING_STATE,
+    CHAIR_UP_STATE,
+    CHAIR_DOWN_STATE,
+    BACKREST_FORWARD_STATE,
+    BACKREST_BACKWARD_STATE,
+    ENTERING_SETTING_STATE,
+    SETTING_STATE,
+    MOUTHWASH_SUPPLY_SETTING_STATE,
+    CUP_FILLING_START_STATE,
+    FLUSH_TIME_SETTING_STATE,
+    FLUSH_START_STATE,
+    RESET_STATE
+
+} keyState;
+
+
+typedef enum {
+    NONE_SB,
+    CIRCLE_SB,
+    SETTING_SB,
+    RESET_SB,
+    CALLASSIST_SB
+
+} specialButton;
+
 
 class MainWindow : public QMainWindow
 {
@@ -74,11 +114,7 @@ private slots:
 
     void on_WaterHeater_PB_clicked();
 
-    void on_CupFiller_PB_clicked();
-
     void on_OperatingLight_PB_clicked();
-
-    void on_BowlRinsing_PB_clicked();
 
     void on_FilmViewer_PB_clicked();
 
@@ -100,6 +136,26 @@ private slots:
 
     void sendCommand(uint8_t command);
 
+    void on_Setting_PB_pressed();
+
+    void on_Setting_PB_released();
+
+    void on_CupFiller_PB_pressed();
+
+    void on_CupFiller_PB_released();
+
+    void on_Reset_PB_pressed();
+
+    void on_Reset_PB_released();
+
+    void on_CallAssist_PB_pressed();
+
+    void on_CallAssist_PB_released();
+
+    void on_BowlRinsing_PB_pressed();
+
+    void on_BowlRinsing_PB_released();
+
 private:
     Ui::MainWindow *ui;
 
@@ -107,6 +163,8 @@ private:
     bool isPresetPositionGroupB_Active = false;
     bool isPresetPositionGroupC_Active = false;
     bool isPresetPositionGroupD_Active = false;
+
+    bool isPresetPositionGroupActive[4] = {false, false, false, false};
 
     bool isPresetPosition1Active    = false;
     bool isPresetPosition2Active    = false;
@@ -120,7 +178,11 @@ private:
     bool isFilmViewerActive     = false;
 
     QSerialPort *serial;
+    QTimer      *timer;
+
     void setupSerialPort();
+    void checkState();
+    void setupTimer();
 
 };
 #endif // MAINWINDOW_H
