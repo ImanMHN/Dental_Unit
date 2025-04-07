@@ -64,14 +64,7 @@ typedef enum {
     CHAIR_UP_STATE,
     CHAIR_DOWN_STATE,
     BACKREST_FORWARD_STATE,
-    BACKREST_BACKWARD_STATE,
-    ENTERING_SETTING_STATE,
-    SETTING_STATE,
-    MOUTHWASH_SUPPLY_SETTING_STATE,
-    CUP_FILLING_START_STATE,
-    FLUSH_TIME_SETTING_STATE,
-    FLUSH_START_STATE,
-    RESET_STATE
+    BACKREST_BACKWARD_STATE
 
 } keyState;
 
@@ -95,28 +88,6 @@ public:
     ~MainWindow();
 
 private slots:
-
-    void on_PresetPositionGroupA_PB_clicked();
-
-    void on_PresetPositionGroupB_PB_clicked();
-
-    void on_PresetPositionGroupC_PB_clicked();
-
-    void on_PresetPositionGroupD_PB_clicked();
-
-    void on_PresetPosition1_PB_clicked();
-
-    void on_PresetPosition2_PB_clicked();
-
-    void on_PresetPosition3_PB_clicked();
-
-    void on_RinsingPosition_PB_clicked();
-
-    void on_WaterHeater_PB_clicked();
-
-    void on_OperatingLight_PB_clicked();
-
-    void on_FilmViewer_PB_clicked();
 
     void on_BackrestForward_PB_pressed();
 
@@ -142,8 +113,6 @@ private slots:
 
     void on_CupFiller_PB_pressed();
 
-    void on_CupFiller_PB_released();
-
     void on_Reset_PB_pressed();
 
     void on_Reset_PB_released();
@@ -154,7 +123,27 @@ private slots:
 
     void on_BowlRinsing_PB_pressed();
 
-    void on_BowlRinsing_PB_released();
+    void on_PresetPosition1_PB_pressed();
+
+    void on_PresetPosition2_PB_pressed();
+
+    void on_PresetPosition3_PB_pressed();
+
+    void on_PresetPositionGroupA_PB_pressed();
+
+    void on_PresetPositionGroupB_PB_pressed();
+
+    void on_PresetPositionGroupC_PB_pressed();
+
+    void on_PresetPositionGroupD_PB_pressed();
+
+    void on_OperatingLight_PB_pressed();
+
+    void on_FilmViewer_PB_pressed();
+
+    void on_WaterHeater_PB_pressed();
+
+    void on_RinsingPosition_PB_pressed();
 
 private:
     Ui::MainWindow *ui;
@@ -176,6 +165,7 @@ private:
     bool isOperatingLightActive = false;
     bool isBowlRinsingActive    = false;
     bool isFilmViewerActive     = false;
+    bool isSetActive            = false;
 
     QSerialPort *serial;
     QTimer      *timer;

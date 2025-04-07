@@ -372,19 +372,6 @@
      <string/>
     </property>
    </widget>
-   <widget class="QRadioButton" name="SettingIndicator_RB">
-    <property name="geometry">
-     <rect>
-      <x>240</x>
-      <y>20</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <zorder>Unit_Label</zorder>
    <zorder>PresetPositionGroupA_PB</zorder>
    <zorder>PresetPositionGroupB_PB</zorder>
@@ -406,7 +393,6 @@
    <zorder>BackrestBackward_PB</zorder>
    <zorder>CallAssist_PB</zorder>
    <zorder>FilmViewer_PB</zorder>
-   <zorder>SettingIndicator_RB</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

@@ -79,7 +79,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_PresetPositionGroupA_PB_clicked()
+void MainWindow::on_PresetPositionGroupA_PB_pressed()
 {
     if (!isPresetPositionGroupA_Active) {
 
@@ -95,10 +95,16 @@ void MainWindow::on_PresetPositionGroupA_PB_clicked()
 
         std::fill(std::begin(isPresetPositionGroupActive), std::end(isPresetPositionGroupActive), false);
         isPresetPositionGroupActive[POSITION_GROUP_A] = true;
+
+        isPresetPosition1Active     = false;
+        isPresetPosition2Active     = false;
+        isPresetPosition3Active     = false;
+        isRinsingPosition1Active    = false;
     }
 }
 
-void MainWindow::on_PresetPositionGroupB_PB_clicked()
+
+void MainWindow::on_PresetPositionGroupB_PB_pressed()
 {
     if (!isPresetPositionGroupB_Active) {
 
@@ -114,11 +120,16 @@ void MainWindow::on_PresetPositionGroupB_PB_clicked()
 
         std::fill(std::begin(isPresetPositionGroupActive), std::end(isPresetPositionGroupActive), false);
         isPresetPositionGroupActive[POSITION_GROUP_B] = true;
+
+        isPresetPosition1Active     = false;
+        isPresetPosition2Active     = false;
+        isPresetPosition3Active     = false;
+        isRinsingPosition1Active    = false;
     }
 }
 
 
-void MainWindow::on_PresetPositionGroupC_PB_clicked()
+void MainWindow::on_PresetPositionGroupC_PB_pressed()
 {
     if (!isPresetPositionGroupC_Active) {
 
@@ -134,11 +145,16 @@ void MainWindow::on_PresetPositionGroupC_PB_clicked()
 
         std::fill(std::begin(isPresetPositionGroupActive), std::end(isPresetPositionGroupActive), false);
         isPresetPositionGroupActive[POSITION_GROUP_C] = true;
+
+        isPresetPosition1Active     = false;
+        isPresetPosition2Active     = false;
+        isPresetPosition3Active     = false;
+        isRinsingPosition1Active    = false;
     }
 }
 
 
-void MainWindow::on_PresetPositionGroupD_PB_clicked()
+void MainWindow::on_PresetPositionGroupD_PB_pressed()
 {
     if (!isPresetPositionGroupD_Active) {
 
@@ -154,11 +170,16 @@ void MainWindow::on_PresetPositionGroupD_PB_clicked()
 
         std::fill(std::begin(isPresetPositionGroupActive), std::end(isPresetPositionGroupActive), false);
         isPresetPositionGroupActive[POSITION_GROUP_D] = true;
+
+        isPresetPosition1Active     = false;
+        isPresetPosition2Active     = false;
+        isPresetPosition3Active     = false;
+        isRinsingPosition1Active    = false;
     }
 }
 
 
-void MainWindow::on_PresetPosition1_PB_clicked()
+void MainWindow::on_PresetPosition1_PB_pressed()
 {
     if (!isPresetPosition1Active) {
 
@@ -184,7 +205,7 @@ void MainWindow::on_PresetPosition1_PB_clicked()
 }
 
 
-void MainWindow::on_PresetPosition2_PB_clicked()
+void MainWindow::on_PresetPosition2_PB_pressed()
 {
     if (!isPresetPosition2Active) {
 
@@ -210,7 +231,7 @@ void MainWindow::on_PresetPosition2_PB_clicked()
 }
 
 
-void MainWindow::on_PresetPosition3_PB_clicked()
+void MainWindow::on_PresetPosition3_PB_pressed()
 {
     if (!isPresetPosition3Active) {
 
@@ -235,9 +256,9 @@ void MainWindow::on_PresetPosition3_PB_clicked()
     }
 }
 
-
-void MainWindow::on_RinsingPosition_PB_clicked()
+void MainWindow::on_RinsingPosition_PB_pressed()
 {
+    sendCommand(RESET2);
     if (!isRinsingPosition1Active) {
 
         setActiveStateStyle(ui->RinsingPosition_PB, NONE_SB);
@@ -249,14 +270,10 @@ void MainWindow::on_RinsingPosition_PB_clicked()
         isPresetPosition2Active     = false;
         isPresetPosition3Active     = false;
         isRinsingPosition1Active    = true;
-
-        sendCommand(RINSING_POSITION);
     }
 }
 
-
-
-void MainWindow::on_WaterHeater_PB_clicked()
+void MainWindow::on_WaterHeater_PB_pressed()
 {
     sendCommand(WATERHEATER);
 
@@ -272,42 +289,40 @@ void MainWindow::on_WaterHeater_PB_clicked()
     isWaterHeaterActive = !isWaterHeaterActive;
 }
 
-void MainWindow::on_CupFiller_PB_pressed()
+void MainWindow::on_WaterHeater_PB_released()
 {
-    if(currentKeyState == SETTING_STATE)
-    {
-        currentKeyState = MOUTHWASH_SUPPLY_SETTING_STATE;
-        setActiveStateStyle(ui->CupFiller_PB, CIRCLE_SB);
-    }
+
 }
 
 
 void MainWindow::on_CupFiller_PB_released()
 {
-    qDebug() << "on_CupFiller_PB_released - cupFillingTime: " << cupFillingTime;
 
-    if(currentKeyState == MOUTHWASH_SUPPLY_SETTING_STATE)
-    {
-        setNormalStateStyle(ui->CupFiller_PB, CIRCLE_SB);
-        isCupFillerActive = false;
-        currentKeyState = WAITING_STATE;
-    } else {
-        if (isCupFillerActive) {
-            // Normal (OFF) state
-            setNormalStateStyle(ui->CupFiller_PB, CIRCLE_SB);
-            currentKeyState = WAITING_STATE;
-        } else {
-            // Active (ON) state
-            setActiveStateStyle(ui->CupFiller_PB, CIRCLE_SB);
-            currentKeyState = CUP_FILLING_START_STATE;
-        }
-
-        // Change the state
-        isCupFillerActive = !isCupFillerActive;
-    }
 }
 
-void MainWindow::on_OperatingLight_PB_clicked()
+
+void MainWindow::on_BowlRinsing_PB_released()
+{
+
+}
+
+void MainWindow::on_CupFiller_PB_pressed()
+{
+    sendCommand(CUPFILLER);
+
+    if (isCupFillerActive) {
+        // Normal (OFF) state
+        setNormalStateStyle(ui->CupFiller_PB, CIRCLE_SB);
+    } else {
+        // Active (ON) state
+        setActiveStateStyle(ui->CupFiller_PB, CIRCLE_SB);
+    }
+
+    // Change the state
+    isCupFillerActive = !isCupFillerActive;
+}
+
+void MainWindow::on_OperatingLight_PB_pressed()
 {
     sendCommand(OPERATINGLIGHT);
 
@@ -325,41 +340,20 @@ void MainWindow::on_OperatingLight_PB_clicked()
 
 void MainWindow::on_BowlRinsing_PB_pressed()
 {
-    setActiveStateStyle(ui->BowlRinsing_PB, CIRCLE_SB);
+    sendCommand(BOWLRINSING);
+
+    if(isBowlRinsingActive){
+        // Normal (OFF) state
+        setNormalStateStyle(ui->BowlRinsing_PB, CIRCLE_SB);
+    }else{
+        // Active (ON) state
+        setActiveStateStyle(ui->BowlRinsing_PB, CIRCLE_SB);
+    }
+    // Change the state
+    isBowlRinsingActive = !isBowlRinsingActive;
 }
 
-
-void MainWindow::on_BowlRinsing_PB_released()
-{
-    if (currentKeyState == WAITING_STATE)
-    {
-        currentKeyState = FLUSH_START_STATE;
-    }
-    else if(currentKeyState == SETTING_STATE)
-    {
-        flushTime = 2000; //(5*60*1000);
-        currentKeyState = FLUSH_TIME_SETTING_STATE;
-        setNormalStateStyle(ui->BowlRinsing_PB, CIRCLE_SB);
-    }
-    else if(currentKeyState == FLUSH_TIME_SETTING_STATE)
-    {
-        tmpTimeKeeper = 0;
-        flushTime += 2000; // (5*60*1000);
-
-        if (flushTime >= 4*2000){ //(4*5*60*1000)){ //4 times button pressed
-            flushTime = 10*2000; //(10*5*60*1000);
-            currentKeyState = FLUSH_START_STATE;
-        }
-        setNormalStateStyle(ui->BowlRinsing_PB, CIRCLE_SB);
-    }
-    else if(currentKeyState == FLUSH_START_STATE)
-    {
-        currentKeyState = WAITING_STATE;
-        setNormalStateStyle(ui->BowlRinsing_PB, CIRCLE_SB);
-    }
-}
-
-void MainWindow::on_FilmViewer_PB_clicked()
+void MainWindow::on_FilmViewer_PB_pressed()
 {
     sendCommand(FILMVIEW);
 
@@ -379,6 +373,16 @@ void MainWindow::on_FilmViewer_PB_clicked()
 void MainWindow::on_BackrestForward_PB_pressed()
 {
     currentKeyState = BACKREST_FORWARD_STATE;
+
+    setNormalStateStyle(ui->PresetPosition1_PB, NONE_SB);
+    setNormalStateStyle(ui->PresetPosition2_PB, NONE_SB);
+    setNormalStateStyle(ui->PresetPosition3_PB, NONE_SB);
+    setNormalStateStyle(ui->RinsingPosition_PB, NONE_SB);
+
+    isPresetPosition1Active     = false;
+    isPresetPosition2Active     = false;
+    isPresetPosition3Active     = false;
+    isRinsingPosition1Active    = false;
 }
 
 
@@ -390,6 +394,16 @@ void MainWindow::on_BackrestForward_PB_released()
 
 void MainWindow::on_BackrestBackward_PB_pressed()
 {
+    setNormalStateStyle(ui->PresetPosition1_PB, NONE_SB);
+    setNormalStateStyle(ui->PresetPosition2_PB, NONE_SB);
+    setNormalStateStyle(ui->PresetPosition3_PB, NONE_SB);
+    setNormalStateStyle(ui->RinsingPosition_PB, NONE_SB);
+
+    isPresetPosition1Active     = false;
+    isPresetPosition2Active     = false;
+    isPresetPosition3Active     = false;
+    isRinsingPosition1Active    = false;
+
     currentKeyState = BACKREST_BACKWARD_STATE;
 }
 
@@ -402,6 +416,16 @@ void MainWindow::on_BackrestBackward_PB_released()
 
 void MainWindow::on_ChairUpward_PB_pressed()
 {
+    setNormalStateStyle(ui->PresetPosition1_PB, NONE_SB);
+    setNormalStateStyle(ui->PresetPosition2_PB, NONE_SB);
+    setNormalStateStyle(ui->PresetPosition3_PB, NONE_SB);
+    setNormalStateStyle(ui->RinsingPosition_PB, NONE_SB);
+
+    isPresetPosition1Active     = false;
+    isPresetPosition2Active     = false;
+    isPresetPosition3Active     = false;
+    isRinsingPosition1Active    = false;
+
     currentKeyState = CHAIR_UP_STATE;
 }
 
@@ -414,6 +438,16 @@ void MainWindow::on_ChairUpward_PB_released()
 
 void MainWindow::on_ChairDownward_PB_pressed()
 {
+    setNormalStateStyle(ui->PresetPosition1_PB, NONE_SB);
+    setNormalStateStyle(ui->PresetPosition2_PB, NONE_SB);
+    setNormalStateStyle(ui->PresetPosition3_PB, NONE_SB);
+    setNormalStateStyle(ui->RinsingPosition_PB, NONE_SB);
+
+    isPresetPosition1Active     = false;
+    isPresetPosition2Active     = false;
+    isPresetPosition3Active     = false;
+    isRinsingPosition1Active    = false;
+
     currentKeyState = CHAIR_DOWN_STATE;
 }
 
@@ -425,25 +459,27 @@ void MainWindow::on_ChairDownward_PB_released()
 
 void MainWindow::on_Setting_PB_pressed()
 {
-    setActiveStateStyle(ui->Setting_PB, SETTING_SB);
+    sendCommand(SET);
 
-    if(currentKeyState == SETTING_STATE){
-        currentKeyState = WAITING_STATE;
+    if(isSetActive){
+        // Normal (OFF) state
+        setNormalStateStyle(ui->Setting_PB, SETTING_SB);
     }else{
-        currentKeyState = ENTERING_SETTING_STATE;
+        // Active (ON) state
+        setActiveStateStyle(ui->Setting_PB, SETTING_SB);
     }
+
+    isSetActive = !isSetActive;
 }
 
 void MainWindow::on_Setting_PB_released()
 {
-    setNormalStateStyle(ui->Setting_PB, SETTING_SB);
 
-    if(enteringSettingModeTime < 3000)
-        currentKeyState = WAITING_STATE;
 }
 
 void MainWindow::on_Reset_PB_pressed()
 {
+    sendCommand(RESET1);
     setActiveStateStyle(ui->Reset_PB, RESET_SB);
 }
 
@@ -451,12 +487,13 @@ void MainWindow::on_Reset_PB_pressed()
 void MainWindow::on_Reset_PB_released()
 {
     setNormalStateStyle(ui->Reset_PB, RESET_SB);
-    currentKeyState = RESET_STATE;
 }
 
 
 void MainWindow::on_CallAssist_PB_pressed()
 {
+    sendCommand(CALLASSIST);
+
     setActiveStateStyle(ui->CallAssist_PB, CALLASSIST_SB);
 }
 
@@ -464,7 +501,6 @@ void MainWindow::on_CallAssist_PB_pressed()
 void MainWindow::on_CallAssist_PB_released()
 {
     setNormalStateStyle(ui->CallAssist_PB, CALLASSIST_SB);
-    sendCommand(CALLASSIST);
 }
 
 /********** Custom Function Definition ***********/
@@ -646,15 +682,17 @@ void MainWindow::sendCommand(uint8_t command)
         "RINSING_POSITION"
     };
 
-    uint8_t startByte = 0x7F;
-    uint8_t crc = startByte + command;
+    uint16_t    startByte = 0x7F;
+    uint8_t     secondByte = 0x01;
+    uint8_t crc = startByte + secondByte + command;
     QByteArray data;
     data.append((char)startByte);
+    data.append((char)secondByte);
     data.append((char)command);
     data.append((char)crc);
 
     serial->write(data);
-//    qDebug() << "Command sent:" << commandsList[command] << " - " << data.toHex();
+    qDebug() << "Command sent:" << commandsList[command] << " - " << data.toHex();
 }
 
 void MainWindow::checkState()
@@ -663,12 +701,6 @@ void MainWindow::checkState()
     switch (currentKeyState) {
 
         case WAITING_STATE:
-            qDebug() << "WAITING_STATE";
-            enteringSettingModeTime = 0;
-            tmpTimeKeeper = 0;
-
-            ui->SettingIndicator_RB->setChecked(false);
-            ui->SettingIndicator_RB->setStyleSheet("");
 
             break;
 
@@ -692,104 +724,29 @@ void MainWindow::checkState()
             sendCommand(BACKRESTBACKWARD);
             break;
 
-        case ENTERING_SETTING_STATE:
-            qDebug() << "ENTERING_SETTING_STATE";
-            enteringSettingModeTime += intervalTime;
-
-            if(enteringSettingModeTime > 3000)
-            {
-                currentKeyState = SETTING_STATE;
-
-                ui->SettingIndicator_RB->setChecked(true);
-                ui->SettingIndicator_RB->setStyleSheet(
-                    "QRadioButton::indicator:checked {"
-                    "    background-color: red;"
-                    "}"
-                );
-            }
-
-            break;
-
-        case SETTING_STATE:
-            qDebug() << "SETTING_STATE";
-            setNormalStateStyle(ui->CupFiller_PB, CIRCLE_SB);
-            setNormalStateStyle(ui->WaterHeater_PB, CIRCLE_SB);
-            setNormalStateStyle(ui->BowlRinsing_PB, CIRCLE_SB);
-            isCupFillerActive   = false;
-            isWaterHeaterActive = false;
-            isBowlRinsingActive = false;
-            break;
-
-        case MOUTHWASH_SUPPLY_SETTING_STATE:
-            qDebug() << "MOUTHWASH_SUPPLY_SETTING_STATE";
-            cupFillingTime += intervalTime;
-            break;
-
-        case CUP_FILLING_START_STATE:
-            qDebug() << "CUP_FILLING_START_STATE";
-            sendCommand(CUPFILLER);
-            tmpTimeKeeper += intervalTime;
-
-            if(tmpTimeKeeper > cupFillingTime)
-            {
-                setNormalStateStyle(ui->CupFiller_PB, CIRCLE_SB);
-                currentKeyState = WAITING_STATE;
-            }
-            break;
-
-        case FLUSH_TIME_SETTING_STATE:
-            qDebug() << "FLUSH_TIME_SETTING_STATE";
-            sendCommand(BOWLRINSING);
-            tmpTimeKeeper += intervalTime;
-
-            if(tmpTimeKeeper > 3000)
-            {
-                tmpTimeKeeper = 0;
-                setActiveStateStyle(ui->BowlRinsing_PB, CIRCLE_SB);
-                currentKeyState = FLUSH_START_STATE;
-                qDebug() << "FLUSH_TIME_SETTING_STATE";
-            }
-            break;
-
-        case FLUSH_START_STATE:
-            qDebug() << "-------->>>> flushTime: "  << flushTime;
-            sendCommand(BOWLRINSING);
-            tmpTimeKeeper += intervalTime;
-
-            setActiveStateStyle(ui->BowlRinsing_PB, CIRCLE_SB);
-            ui->SettingIndicator_RB->setChecked(false);
-            ui->SettingIndicator_RB->setStyleSheet("");
-
-            if(tmpTimeKeeper > flushTime)
-            {
-                tmpTimeKeeper = 0;
-                setNormalStateStyle(ui->BowlRinsing_PB, CIRCLE_SB);
-                currentKeyState = WAITING_STATE;
-            }
-            break;
-
-        case RESET_STATE:
-            qDebug() << "RESET_STATE";
-
-            if(isResetUP)
-                sendCommand(CHAIRDOWN);
-            else
-                sendCommand(BACKRESTFORWARD);
-
-            isResetUP = !isResetUP;
-
-            tmpTimeKeeper += intervalTime;
-
-            if(tmpTimeKeeper > 10000)
-            {
-                currentKeyState = WAITING_STATE;
-            }
-            break;
-
         default:
             currentKeyState = WAITING_STATE;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
