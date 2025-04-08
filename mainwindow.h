@@ -47,7 +47,10 @@ typedef enum
     OK                  = 0x19,
     ERROR               = 0x1A,
     FILMVIEW            = 0x1B,
-    RINSING_POSITION    = 0x1C
+    DR_1                = 0x1C,
+    DR_2                = 0x1D,
+    DR_3                = 0x1E,
+    DR_4                = 0x1F
 
 } SerialCommands;
 
@@ -145,6 +148,12 @@ private slots:
 
     void on_RinsingPosition_PB_pressed();
 
+    void on_WaterHeater_PB_released();
+
+    void on_CupFiller_PB_released();
+
+    void on_BowlRinsing_PB_released();
+
 private:
     Ui::MainWindow *ui;
 
@@ -167,12 +176,15 @@ private:
     bool isFilmViewerActive     = false;
     bool isSetActive            = false;
 
-    QSerialPort *serial;
+    QSerialPort *serialPort2;
+    QSerialPort *serialPort1;
     QTimer      *timer;
+    QTimer      *timerVoiceAssist;
 
     void setupSerialPort();
     void checkState();
     void setupTimer();
-
+    void readVoiceAssistData();
+    void sendVoiceAssistCmd();
 };
 #endif // MAINWINDOW_H

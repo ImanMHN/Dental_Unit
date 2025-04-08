@@ -3,21 +3,23 @@
 
 /********** Custom variable Definition ***********/
 static QString  main_icon_address = "/opt/DentalUnit/bin/icon/";
-static uint8_t  icon_global_size = 70;
 bool            isResetUP = true;
 bool            isButtonDirActive = false;
+bool            isSerialPort2Free = true;
 uint8_t         intervalTime = 100;
 uint8_t         currentKeyState = WAITING_STATE;
 uint16_t        enteringSettingModeTime = 0;
 uint16_t        cupFillingTime = 1000;
 uint16_t        tmpTimeKeeper = 0;
 uint32_t        flushTime = 2000; //5*60*1000;
+QByteArray      voiceAssistCommand;
 
 
 /********** Custom Function Declaration ***********/
-void setIconOnButton(QPushButton *button, const QString &iconName, bool flat = true, bool transparent = true);
+void setIconOnButton(QPushButton *button, bool flat = true, bool transparent = true);
 void setNormalStateStyle(QPushButton *button, uint8_t whichSpecialButton = NONE_SB);
 void setActiveStateStyle(QPushButton *button, uint8_t whichSpecialButton = NONE_SB);
+void setChairDirectionsStyle(QPushButton *button);
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -30,26 +32,28 @@ MainWindow::MainWindow(QWidget *parent)
 
     setupTimer();
 
-    QPixmap pix(main_icon_address + "dentalunit.png");
-    ui->Unit_Label->setPixmap(pix);
+//    QPixmap pix(main_icon_address + "dentalunit.png");
+//    ui->Unit_Label->setPixmap(pix);
 
-    setIconOnButton(ui->BackrestBackward_PB,    "backrestbackward.png");
-    setIconOnButton(ui->BackrestForward_PB,     "backrestforward.png");
-    setIconOnButton(ui->ChairUpward_PB,         "chairupward.png");
-    setIconOnButton(ui->ChairDownward_PB,       "chairdownward.png");
+    setStyleSheet("background-color: #e2f8fa;");
 
-    setIconOnButton(ui->BowlRinsing_PB,     "bowlrinsing.png",      false, true);
-    setIconOnButton(ui->CupFiller_PB,       "cupfiller.png",        false, true);
-    setIconOnButton(ui->OperatingLight_PB,  "operatinglight.png",   false, true);
-    setIconOnButton(ui->WaterHeater_PB,     "waterheater.png",      false, true);
-    setIconOnButton(ui->FilmViewer_PB,      "filmviewer.png",       false, true);
+    setIconOnButton(ui->BackrestBackward_PB);
+    setIconOnButton(ui->BackrestForward_PB);
+    setIconOnButton(ui->ChairUpward_PB);
+    setIconOnButton(ui->ChairDownward_PB);
 
-    setIconOnButton(ui->PresetPosition1_PB, "presetposition1.png", false, true);
-    setIconOnButton(ui->PresetPosition2_PB, "presetposition2.png", false, true);
-    setIconOnButton(ui->PresetPosition3_PB, "presetposition3.png", false, true);
-    setIconOnButton(ui->RinsingPosition_PB, "rinsingposition.png", false, true);
+    setIconOnButton(ui->BowlRinsing_PB,     false, true);
+    setIconOnButton(ui->CupFiller_PB,       false, true);
+    setIconOnButton(ui->OperatingLight_PB,  false, true);
+    setIconOnButton(ui->WaterHeater_PB,     false, true);
+    setIconOnButton(ui->FilmViewer_PB,      false, true);
 
-    setIconOnButton(ui->CallAssist_PB, "callassist.png", false, true);
+    setIconOnButton(ui->PresetPosition1_PB, false, true);
+    setIconOnButton(ui->PresetPosition2_PB, false, true);
+    setIconOnButton(ui->PresetPosition3_PB, false, true);
+    setIconOnButton(ui->RinsingPosition_PB, false, true);
+
+    setIconOnButton(ui->CallAssist_PB, false, true);
 
     setNormalStateStyle(ui->CallAssist_PB   , CALLASSIST_SB);
     setNormalStateStyle(ui->Setting_PB      , SETTING_SB);
@@ -72,6 +76,11 @@ MainWindow::MainWindow(QWidget *parent)
     setNormalStateStyle(ui->OperatingLight_PB   , CIRCLE_SB);
     setNormalStateStyle(ui->BowlRinsing_PB      , CIRCLE_SB);
     setNormalStateStyle(ui->FilmViewer_PB       , NONE_SB);
+
+    setChairDirectionsStyle(ui->ChairUpward_PB);
+    setChairDirectionsStyle(ui->ChairDownward_PB);
+    setChairDirectionsStyle(ui->BackrestBackward_PB);
+    setChairDirectionsStyle(ui->BackrestForward_PB);
 }
 
 MainWindow::~MainWindow()
@@ -82,6 +91,8 @@ MainWindow::~MainWindow()
 void MainWindow::on_PresetPositionGroupA_PB_pressed()
 {
     if (!isPresetPositionGroupA_Active) {
+
+        sendCommand(DR_1);
 
         setActiveStateStyle(ui->PresetPositionGroupA_PB, NONE_SB);
         setNormalStateStyle(ui->PresetPositionGroupB_PB, NONE_SB);
@@ -108,6 +119,8 @@ void MainWindow::on_PresetPositionGroupB_PB_pressed()
 {
     if (!isPresetPositionGroupB_Active) {
 
+        sendCommand(DR_2);
+
         setActiveStateStyle(ui->PresetPositionGroupB_PB, NONE_SB);
         setNormalStateStyle(ui->PresetPositionGroupA_PB, NONE_SB);
         setNormalStateStyle(ui->PresetPositionGroupC_PB, NONE_SB);
@@ -133,6 +146,8 @@ void MainWindow::on_PresetPositionGroupC_PB_pressed()
 {
     if (!isPresetPositionGroupC_Active) {
 
+        sendCommand(DR_3);
+
         setActiveStateStyle(ui->PresetPositionGroupC_PB, NONE_SB);
         setNormalStateStyle(ui->PresetPositionGroupA_PB, NONE_SB);
         setNormalStateStyle(ui->PresetPositionGroupB_PB, NONE_SB);
@@ -157,6 +172,8 @@ void MainWindow::on_PresetPositionGroupC_PB_pressed()
 void MainWindow::on_PresetPositionGroupD_PB_pressed()
 {
     if (!isPresetPositionGroupD_Active) {
+
+        sendCommand(DR_4);
 
         setActiveStateStyle(ui->PresetPositionGroupD_PB, NONE_SB);
         setNormalStateStyle(ui->PresetPositionGroupA_PB, NONE_SB);
@@ -277,49 +294,24 @@ void MainWindow::on_WaterHeater_PB_pressed()
 {
     sendCommand(WATERHEATER);
 
-    if (isWaterHeaterActive) {
-        // Normal (OFF) state
-        setNormalStateStyle(ui->WaterHeater_PB, CIRCLE_SB);
-    } else {
-        // Active (ON) state
-        setActiveStateStyle(ui->WaterHeater_PB, CIRCLE_SB);
-    }
-
-    // Change the state
-    isWaterHeaterActive = !isWaterHeaterActive;
+    setActiveStateStyle(ui->WaterHeater_PB, CIRCLE_SB);
 }
 
 void MainWindow::on_WaterHeater_PB_released()
 {
-
-}
-
-
-void MainWindow::on_CupFiller_PB_released()
-{
-
-}
-
-
-void MainWindow::on_BowlRinsing_PB_released()
-{
-
+    setNormalStateStyle(ui->WaterHeater_PB, CIRCLE_SB);
 }
 
 void MainWindow::on_CupFiller_PB_pressed()
 {
     sendCommand(CUPFILLER);
 
-    if (isCupFillerActive) {
-        // Normal (OFF) state
-        setNormalStateStyle(ui->CupFiller_PB, CIRCLE_SB);
-    } else {
-        // Active (ON) state
-        setActiveStateStyle(ui->CupFiller_PB, CIRCLE_SB);
-    }
+    setActiveStateStyle(ui->CupFiller_PB, CIRCLE_SB);
+}
 
-    // Change the state
-    isCupFillerActive = !isCupFillerActive;
+void MainWindow::on_CupFiller_PB_released()
+{
+    setNormalStateStyle(ui->CupFiller_PB, CIRCLE_SB);
 }
 
 void MainWindow::on_OperatingLight_PB_pressed()
@@ -342,15 +334,13 @@ void MainWindow::on_BowlRinsing_PB_pressed()
 {
     sendCommand(BOWLRINSING);
 
-    if(isBowlRinsingActive){
-        // Normal (OFF) state
-        setNormalStateStyle(ui->BowlRinsing_PB, CIRCLE_SB);
-    }else{
-        // Active (ON) state
-        setActiveStateStyle(ui->BowlRinsing_PB, CIRCLE_SB);
-    }
-    // Change the state
-    isBowlRinsingActive = !isBowlRinsingActive;
+    setActiveStateStyle(ui->BowlRinsing_PB, CIRCLE_SB);
+}
+
+
+void MainWindow::on_BowlRinsing_PB_released()
+{
+    setNormalStateStyle(ui->BowlRinsing_PB, CIRCLE_SB);
 }
 
 void MainWindow::on_FilmViewer_PB_pressed()
@@ -504,10 +494,10 @@ void MainWindow::on_CallAssist_PB_released()
 }
 
 /********** Custom Function Definition ***********/
-void setIconOnButton(QPushButton *button, const QString &iconName, bool flat, bool transparent) {
-    QIcon icon(main_icon_address + iconName);
-    button->setIcon(icon);
-    button->setIconSize(QSize(icon_global_size, icon_global_size));
+void setIconOnButton(QPushButton *button, bool flat, bool transparent) {
+//    QIcon icon(main_icon_address + iconName);
+//    button->setIcon(icon);
+//    button->setIconSize(QSize(icon_global_size, icon_global_size));
     if (flat) button->setFlat(true);
     if (transparent) button->setStyleSheet("background-color: transparent; border: none;");
 }
@@ -523,6 +513,9 @@ void setNormalStateStyle(QPushButton *button, uint8_t whichSpecialButton){
                     "border: 5px solid black;"
                     "color: black;"
                     "border-radius: 40px;"
+                    "}"
+                    "QPushButton:focus {"
+                    "    outline: none;"
                     "}"
         );
     }
@@ -578,6 +571,9 @@ void setActiveStateStyle(QPushButton *button, uint8_t whichSpecialButton){
                     "color: white;"
                     "border-radius: 40px;"
                     "}"
+                    "QPushButton:focus {"
+                    "    outline: none;"
+                    "}"
         );
     }
     else if (whichSpecialButton == CALLASSIST_SB) {
@@ -621,23 +617,103 @@ void setActiveStateStyle(QPushButton *button, uint8_t whichSpecialButton){
     }
 }
 
+void setChairDirectionsStyle(QPushButton *button)
+{
+    button->setStyleSheet(
+        "QPushButton {"
+        "    background-color: transparent;"
+        "    border: none;"
+        "}"
+        "QPushButton:focus {"
+        "    outline: none;"
+        "}"
+    );
+}
+
 /********** Custom Function of MainWindow Object Definition ***********/
 void MainWindow::setupSerialPort()
 {
-    serial = new QSerialPort(this);
 
-    serial->setPortName("/dev/ttyS2");
-    serial->setBaudRate(QSerialPort::Baud115200);
-    serial->setDataBits(QSerialPort::Data8);
-    serial->setParity(QSerialPort::NoParity);
-    serial->setStopBits(QSerialPort::OneStop);
-    serial->setFlowControl(QSerialPort::NoFlowControl);
+    /*** SERIAL PORT 1 SETUP - START ***/
+    serialPort1 = new QSerialPort(this);
 
-    if (serial->open(QIODevice::WriteOnly)) {
-        qDebug() << "Serial port opened successfully.";
+    serialPort1->setPortName("/dev/ttyS1");
+    serialPort1->setBaudRate(QSerialPort::Baud115200);
+    serialPort1->setDataBits(QSerialPort::Data8);
+    serialPort1->setParity(QSerialPort::NoParity);
+    serialPort1->setStopBits(QSerialPort::OneStop);
+    serialPort1->setFlowControl(QSerialPort::NoFlowControl);
+
+    connect(serialPort1, &QSerialPort::readyRead, this, &MainWindow::readVoiceAssistData);
+
+    if (serialPort1->open(QIODevice::ReadOnly)) {
+        qDebug() << "Serial port 1 opened successfully.";
     } else {
-        qDebug() << "Failed to open serial port:" << serial->errorString();
+        qDebug() << "Failed to open serial port 1:" << serialPort1->errorString();
     }
+    /*** SERIAL PORT 1 SETUP - END ***/
+
+    /*** SERIAL PORT 2 SETUP - START***/
+    serialPort2 = new QSerialPort(this);
+
+    serialPort2->setPortName("/dev/ttyS2");
+    serialPort2->setBaudRate(QSerialPort::Baud115200);
+    serialPort2->setDataBits(QSerialPort::Data8);
+    serialPort2->setParity(QSerialPort::NoParity);
+    serialPort2->setStopBits(QSerialPort::OneStop);
+    serialPort2->setFlowControl(QSerialPort::NoFlowControl);
+
+    if (serialPort2->open(QIODevice::WriteOnly)) {
+        qDebug() << "Serial port 2 opened successfully.";
+    } else {
+        qDebug() << "Failed to open serial port 2:" << serialPort2->errorString();
+    }
+    /*** SERIAL PORT 2 SETUP - END ***/
+}
+
+void MainWindow::readVoiceAssistData()
+{
+    QByteArray data = serialPort1->readAll();
+
+    if(isSerialPort2Free){
+        serialPort2->write(data);
+    }else{
+        voiceAssistCommand.clear();
+        voiceAssistCommand = data;
+        timerVoiceAssist->start();
+    }
+
+    qDebug() << "Received data:" << data;
+
+    /**** DETECTING COMMAND - START ****/
+    uint32_t value = 0;
+    for (int i = 0; i < data.size(); ++i) {
+        value |= (static_cast<uint8_t>(data[i]) << (8 * (data.size() - i - 1)));
+    }
+
+    uint8_t firstByte = (uint8_t) ((value & 0xFF000000) >> 24);
+    if (firstByte != 0x7F)
+    {
+        qDebug() << "Wrong First byte";
+        return;
+    }
+
+    uint8_t secondByte = (uint8_t) ((value & 0x00FF0000) >> 16);
+    uint8_t frameCmd = (uint8_t) ((value & 0x0000FF00) >> 8);
+    uint8_t frameCRC = (uint8_t) ((value & 0x000000FF));
+    uint8_t calculatedCRC = firstByte+secondByte+frameCmd;
+
+    if (frameCRC != calculatedCRC)
+    {
+        qDebug() << "Wrong CRC - frameCRC: " << QString::number(frameCRC, 16).toUpper() << " calculatedCRC: " << QString::number(calculatedCRC, 16).toUpper();
+        return;
+    }
+
+    if(frameCmd == DR_1) on_PresetPositionGroupA_PB_pressed();
+    if(frameCmd == DR_2) on_PresetPositionGroupB_PB_pressed();
+    if(frameCmd == DR_3) on_PresetPositionGroupC_PB_pressed();
+    if(frameCmd == DR_4) on_PresetPositionGroupD_PB_pressed();
+    /**** DETECTING COMMAND - STOP ****/
 }
 
 void MainWindow::setupTimer()
@@ -646,10 +722,15 @@ void MainWindow::setupTimer()
     timer->setInterval(intervalTime); //ms
     connect(timer, &QTimer::timeout, this, &MainWindow::checkState);
     timer->start();
+
+    timerVoiceAssist = new QTimer(this);
+    timerVoiceAssist->setInterval(intervalTime/2); //ms
+    connect(timerVoiceAssist, &QTimer::timeout, this, &MainWindow::sendVoiceAssistCmd);
 }
 
 void MainWindow::sendCommand(uint8_t command)
 {
+    isSerialPort2Free = false;
     static QString commandsList[] = {
         "NONE",
         "CHAIRUP",
@@ -679,11 +760,14 @@ void MainWindow::sendCommand(uint8_t command)
         "OK",
         "ERROR",
         "FILMVIEW",
-        "RINSING_POSITION"
+        "DR_1",
+        "DR_2",
+        "DR_3",
+        "DR_4"
     };
 
-    uint16_t    startByte = 0x7F;
-    uint8_t     secondByte = 0x01;
+    uint8_t startByte = 0x7F;
+    uint8_t secondByte = 0x01;
     uint8_t crc = startByte + secondByte + command;
     QByteArray data;
     data.append((char)startByte);
@@ -691,8 +775,18 @@ void MainWindow::sendCommand(uint8_t command)
     data.append((char)command);
     data.append((char)crc);
 
-    serial->write(data);
+    serialPort2->write(data);
     qDebug() << "Command sent:" << commandsList[command] << " - " << data.toHex();
+    isSerialPort2Free = true;
+}
+
+void MainWindow::sendVoiceAssistCmd()
+{
+    if(isSerialPort2Free){
+        timerVoiceAssist->stop();
+        serialPort2->write(voiceAssistCommand);
+        voiceAssistCommand.clear();
+    }
 }
 
 void MainWindow::checkState()

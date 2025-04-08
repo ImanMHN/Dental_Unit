@@ -114,6 +114,16 @@
     <property name="text">
      <string/>
     </property>
+    <property name="icon">
+     <iconset resource="icons.qrc">
+      <normaloff>:/icons/presetposition2.png</normaloff>:/icons/presetposition2.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>80</width>
+      <height>80</height>
+     </size>
+    </property>
    </widget>
    <widget class="QPushButton" name="PresetPosition1_PB">
     <property name="geometry">
@@ -126,6 +136,16 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="icons.qrc">
+      <normaloff>:/icons/presetposition1.png</normaloff>:/icons/presetposition1.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>80</width>
+      <height>80</height>
+     </size>
     </property>
    </widget>
    <widget class="QPushButton" name="RinsingPosition_PB">
@@ -140,6 +160,16 @@
     <property name="text">
      <string/>
     </property>
+    <property name="icon">
+     <iconset resource="icons.qrc">
+      <normaloff>:/icons/rinsingposition.png</normaloff>:/icons/rinsingposition.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>80</width>
+      <height>80</height>
+     </size>
+    </property>
    </widget>
    <widget class="QPushButton" name="PresetPosition3_PB">
     <property name="geometry">
@@ -152,6 +182,16 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="icons.qrc">
+      <normaloff>:/icons/presetposition3.png</normaloff>:/icons/presetposition3.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>80</width>
+      <height>80</height>
+     </size>
     </property>
    </widget>
    <widget class="QPushButton" name="BowlRinsing_PB">
@@ -166,6 +206,16 @@
     <property name="text">
      <string/>
     </property>
+    <property name="icon">
+     <iconset resource="icons.qrc">
+      <normaloff>:/icons/bowlrinsing.png</normaloff>:/icons/bowlrinsing.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>80</width>
+      <height>80</height>
+     </size>
+    </property>
    </widget>
    <widget class="QPushButton" name="CupFiller_PB">
     <property name="geometry">
@@ -179,10 +229,14 @@
     <property name="text">
      <string/>
     </property>
+    <property name="icon">
+     <iconset resource="icons.qrc">
+      <normaloff>:/icons/cupfiller.png</normaloff>:/icons/cupfiller.png</iconset>
+    </property>
     <property name="iconSize">
      <size>
-      <width>50</width>
-      <height>50</height>
+      <width>80</width>
+      <height>80</height>
      </size>
     </property>
    </widget>
@@ -198,6 +252,16 @@
     <property name="text">
      <string/>
     </property>
+    <property name="icon">
+     <iconset resource="icons.qrc">
+      <normaloff>:/icons/operatinglight.png</normaloff>:/icons/operatinglight.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>80</width>
+      <height>80</height>
+     </size>
+    </property>
    </widget>
    <widget class="QPushButton" name="WaterHeater_PB">
     <property name="geometry">
@@ -210,6 +274,16 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="icons.qrc">
+      <normaloff>:/icons/waterheater.png</normaloff>:/icons/waterheater.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>80</width>
+      <height>80</height>
+     </size>
     </property>
    </widget>
    <widget class="QLabel" name="Unit_Label">
@@ -228,7 +302,10 @@
      </sizepolicy>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="icons.qrc">:/icons/dentalunit.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -291,6 +368,16 @@
     <property name="text">
      <string/>
     </property>
+    <property name="icon">
+     <iconset resource="icons.qrc">
+      <normaloff>:/icons/chairupward.png</normaloff>:/icons/chairupward.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>80</width>
+      <height>80</height>
+     </size>
+    </property>
    </widget>
    <widget class="QPushButton" name="ChairDownward_PB">
     <property name="geometry">
@@ -308,6 +395,16 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="icons.qrc">
+      <normaloff>:/icons/chairdownward.png</normaloff>:/icons/chairdownward.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>80</width>
+      <height>80</height>
+     </size>
     </property>
    </widget>
    <widget class="QPushButton" name="BackrestForward_PB">
@@ -327,6 +424,16 @@
     <property name="text">
      <string/>
     </property>
+    <property name="icon">
+     <iconset resource="icons.qrc">
+      <normaloff>:/icons/backrestforward.png</normaloff>:/icons/backrestforward.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>80</width>
+      <height>80</height>
+     </size>
+    </property>
    </widget>
    <widget class="QPushButton" name="BackrestBackward_PB">
     <property name="geometry">
@@ -345,6 +452,16 @@
     <property name="text">
      <string/>
     </property>
+    <property name="icon">
+     <iconset resource="icons.qrc">
+      <normaloff>:/icons/backrestbackward.png</normaloff>:/icons/backrestbackward.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>80</width>
+      <height>80</height>
+     </size>
+    </property>
    </widget>
    <widget class="QPushButton" name="CallAssist_PB">
     <property name="geometry">
@@ -358,6 +475,16 @@
     <property name="text">
      <string/>
     </property>
+    <property name="icon">
+     <iconset resource="icons.qrc">
+      <normaloff>:/icons/callassist.png</normaloff>:/icons/callassist.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>70</width>
+      <height>70</height>
+     </size>
+    </property>
    </widget>
    <widget class="QPushButton" name="FilmViewer_PB">
     <property name="geometry">
@@ -370,6 +497,16 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="icons.qrc">
+      <normaloff>:/icons/filmviewer.png</normaloff>:/icons/filmviewer.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>80</width>
+      <height>80</height>
+     </size>
     </property>
    </widget>
    <zorder>Unit_Label</zorder>
@@ -406,6 +543,8 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

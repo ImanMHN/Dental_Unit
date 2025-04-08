@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/backrestbackward.png</file>
+        <file>icons/backrestforward.png</file>
+        <file>icons/bowlrinsing.png</file>
+        <file>icons/callassist.png</file>
+        <file>icons/chairdownward.png</file>
+        <file>icons/chairupward.png</file>
+        <file>icons/cupfiller.png</file>
+        <file>icons/dentalunit.png</file>
+        <file>icons/filmviewer.png</file>
+        <file>icons/operatinglight.png</file>
+        <file>icons/presetposition1.png</file>
+        <file>icons/presetposition2.png</file>
+        <file>icons/presetposition3.png</file>
+        <file>icons/rinsingposition.png</file>
+        <file>icons/waterheater.png</file>
+    </qresource>
+</RCC>
